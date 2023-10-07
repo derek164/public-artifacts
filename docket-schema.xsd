@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- ELEMENT DECLARATIONS -->
+
+    <xs:element name="docket">
+        <xs:complexType>
+            <xs:sequence>
+
+                <xs:element name="docket-number" minOccurs="1" maxOccurs="1" type="filing-format"/>
+
+                <xs:element name="title" minOccurs="1" maxOccurs="1" type="xs:string"/>
+
+                <xs:element name="docket-date" minOccurs="1" maxOccurs="1" type="date-format"/>
+
+                <xs:element name="lower-court" minOccurs="1" maxOccurs="1" type="xs:string"/>
+
+                <xs:element name="case-numbers" type="case-numbers"/>
+
+                <xs:element name="decision-date" minOccurs="1" maxOccurs="1" type="date-format"/>
+
+                <xs:element name="questions-presented" type="questions-presented"/>
+
+                <xs:element name="proceedings-and-orders" type="proceedings-and-orders"/>
+
+                <xs:element name="parties-and-attorneys" type="parties-and-attorneys"/>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!--  TYPE DEFINITIONS -->
+
+    <xs:simpleType name="filing-format">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}-\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="date-format">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(January|Jan) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(February|Feb) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(March|Mar) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(April|Apr) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(May) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(June|Jun) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(July|Jul) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(August|Aug) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(September|Sep) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(October|Oct) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(November|Nov) \d{1,2},? \d{4}"/>
+            <xs:pattern value="(December|Dec) \d{1,2},? \d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="case-numbers">
+        <xs:sequence>
+            <xs:element name="case-number" minOccurs="1" maxOccurs="unbounded" type="filing-format"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="question">
+        <xs:sequence>
+            <xs:element name="content" minOccurs="1" maxOccurs="1" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="question-id" type="xs:integer" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="questions-presented">
+        <xs:sequence>
+            <xs:element name="question" minOccurs="1" maxOccurs="unbounded" type="question"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="event">
+        <xs:sequence>
+            <xs:element name="description" minOccurs="1" maxOccurs="1" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="event-id" type="xs:integer" use="optional"/>
+        <xs:attribute name="event-date" type="date-format" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="proceedings-and-orders">
+        <xs:sequence>
+            <xs:element name="event" minOccurs="1" maxOccurs="unbounded" type="event"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="name">
+        <xs:attribute name="first" type="xs:string" use="required"/>
+        <xs:attribute name="middle" type="xs:string" use="optional"/>
+        <xs:attribute name="last" type="xs:string" use="required"/>
+        <xs:attribute name="suffix" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="address">
+        <xs:attribute name="addressee" type="xs:string" use="optional"/>
+        <xs:attribute name="organization" type="xs:string" use="required"/>
+        <xs:attribute name="line-1" type="xs:string" use="optional"/>
+        <xs:attribute name="line-2" type="xs:string" use="optional"/>
+        <xs:attribute name="city" type="xs:string" use="required"/>
+        <xs:attribute name="state" type="xs:string" use="required"/>
+        <xs:attribute name="zip" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="\d{5}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="contact">
+        <xs:attribute name="email" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[\w.!#$%&amp;'*+-/=?^_`{|}~]{1,64}@[\w.!#$%&amp;'*+-/=?^_`{|}~]{1,255}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="phone" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="\(\d{3}\) \d{3}-\d{4}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="attorney">
+        <xs:sequence>
+            <xs:element name="name" minOccurs="1" maxOccurs="1" type="name"/>
+            <xs:element name="contact" minOccurs="1" maxOccurs="1" type="contact"/>
+            <xs:element name="address" minOccurs="1" maxOccurs="1" type="address"/>
+        </xs:sequence>
+        <xs:attribute name="attorney-id" type="xs:integer" use="optional"/>
+        <xs:attribute name="party-name" type="xs:string" use="required"/>
+        <xs:attribute name="counsel-of-record" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="parties-and-attorneys">
+        <xs:sequence>
+            <xs:element name="attorney" minOccurs="1" maxOccurs="unbounded" type="attorney"/>
+        </xs:sequence>
+        <xs:attribute name="appellants" type="xs:string" use="optional"/>
+        <xs:attribute name="appellees" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+</xs:schema>
