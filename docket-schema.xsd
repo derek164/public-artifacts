@@ -6,25 +6,10 @@
     <xs:element name="docket">
         <xs:complexType>
             <xs:sequence>
-
-                <xs:element name="docket-number" minOccurs="1" maxOccurs="1" type="filing-format"/>
-
-                <xs:element name="title" minOccurs="1" maxOccurs="1" type="xs:string"/>
-
-                <xs:element name="docket-date" minOccurs="1" maxOccurs="1" type="date-format"/>
-
-                <xs:element name="lower-court" minOccurs="1" maxOccurs="1" type="xs:string"/>
-
-                <xs:element name="case-numbers" type="case-numbers"/>
-
-                <xs:element name="decision-date" minOccurs="1" maxOccurs="1" type="date-format"/>
-
+                <xs:element name="docket-metadata" type="docket-metadata"/>
                 <xs:element name="questions-presented" type="questions-presented"/>
-
                 <xs:element name="proceedings-and-orders" type="proceedings-and-orders"/>
-
                 <xs:element name="parties-and-attorneys" type="parties-and-attorneys"/>
-
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -58,6 +43,17 @@
     <xs:complexType name="case-numbers">
         <xs:sequence>
             <xs:element name="case-number" minOccurs="1" maxOccurs="unbounded" type="filing-format"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="docket-metadata">
+        <xs:sequence>
+            <xs:element name="docket-number" minOccurs="1" maxOccurs="1" type="filing-format"/>
+            <xs:element name="title" minOccurs="1" maxOccurs="1" type="xs:string"/>
+            <xs:element name="docket-date" minOccurs="1" maxOccurs="1" type="date-format"/>
+            <xs:element name="lower-court" minOccurs="1" maxOccurs="1" type="xs:string"/>
+            <xs:element name="case-numbers" type="case-numbers"/>
+            <xs:element name="decision-date" minOccurs="1" maxOccurs="1" type="date-format"/>
         </xs:sequence>
     </xs:complexType>
 
